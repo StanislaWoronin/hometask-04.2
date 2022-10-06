@@ -5,14 +5,14 @@ import {contentPageType} from "../types/contentPage-type";
 import {paginationContentPage} from "../paginationContentPage";
 
 export const postsService = {
-    async createNewPost(title: string, shortDescription: string, content: string, blogId: string): Promise<postType> {
+    async createNewPost(title: string, shortDescription: string, content: string, id: string): Promise<postType> {
         const newPost: postType = {
             id: String(+new Date()),
             title: title,
             shortDescription: shortDescription,
             content: content,
-            blogId: blogId,
-            blogName: await blogsRepository.giveBlogName(blogId),
+            blogId: id,
+            blogName: await blogsRepository.giveBlogName(id),
             createdAt: new Date().toISOString()
         }
 

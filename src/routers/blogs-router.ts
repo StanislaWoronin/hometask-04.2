@@ -16,17 +16,12 @@ blogsRouter.post('/',
     async (req: Request, res: Response) => {
         const newBlog: blogType = await blogsService.createNewBlog(req.body.name, req.body.youtubeUrl)
 
-        if (!newBlog) {
-            return res.status(404)
-        }
-
         res.status(201).send(newBlog)
     }
 )
 
 blogsRouter.post('/:id/posts',
     authenticationGuardMiddleware,
-    ...queryValidationMiddleware,
     ...postForBlogValidation,
     async (req: Request, res: Response) => {
         const existsBlog = await blogsService.giveBlogById(req.params.id)
@@ -45,11 +40,10 @@ blogsRouter.get('/',
     async (req: Request, res: Response) => {
     const pageWithBlogs: contentPageType = await blogsService
         .giveBlogsPage(req.query.name?.toString(),
-            // @ts-ignore
-                       req.query.sortBy,
-                       req.query.sortDirection,
-                       req.query.pageNumber,
-                       req.query.pageSize) // юрл это строка, почему нужно приводить к строке
+                       <string>req.query.sortBy,
+                       <string>req.query.sortDirection,
+                       <string>req.query.pageNumber,
+                       <string>req.query.pageSize) // юрл это строка, почему нужно приводить к строке
 
     if (!pageWithBlogs) {
         return res.sendStatus(404)
