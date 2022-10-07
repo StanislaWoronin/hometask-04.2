@@ -14,6 +14,7 @@ blogsRouter.post('/',
     authenticationGuardMiddleware,
     ...blogRouterValidation,
     async (req: Request, res: Response) => {
+
         const newBlog: blogType = await blogsService.createNewBlog(req.body.name, req.body.youtubeUrl)
 
         res.status(201).send(newBlog)
@@ -24,6 +25,7 @@ blogsRouter.post('/:id/posts',
     authenticationGuardMiddleware,
     ...postForBlogValidation,
     async (req: Request, res: Response) => {
+
         const existsBlog = await blogsService.giveBlogById(req.params.id)
 
         if (!existsBlog) {
@@ -38,6 +40,7 @@ blogsRouter.post('/:id/posts',
 blogsRouter.get('/',
     ...queryValidationMiddleware,
     async (req: Request, res: Response) => {
+
     const pageWithBlogs: contentPageType = await blogsService
         .giveBlogsPage(req.query.searchNameTerm as string,
                        req.query.sortBy as string,
@@ -65,6 +68,7 @@ blogsRouter.get('/:id', async (req: Request, res: Response) => {
 blogsRouter.get('/:id/posts',
     ...queryValidationMiddleware,
     async (req: Request, res: Response) => {
+
     const blog: blogType | null = await blogsService.giveBlogById(req.params.id)
 
     if (!blog) {
@@ -85,6 +89,7 @@ blogsRouter.put('/:id',
     authenticationGuardMiddleware,
     ...blogRouterValidation,
     async (req: Request, res: Response) => {
+
         const isUpdate = await blogsService.updateBlog(req.params.id, req.body.name, req.body.youtubeUrl)
 
         if (!isUpdate) {
@@ -99,6 +104,7 @@ blogsRouter.put('/:id',
 blogsRouter.delete('/:id',
     authenticationGuardMiddleware,
     async (req: Request, res: Response) => {
+
         const isDeleted = await blogsService.deleteBlogById(req.params.id)
 
         if (!isDeleted) {

@@ -12,6 +12,7 @@ postsRouter.post('/',
     authenticationGuardMiddleware,
     ...postRouterValidation,
     async (req: Request, res: Response) => {
+
         const newPost: postType = await postsService.createNewPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
 
         if (!newPost) {
@@ -25,6 +26,7 @@ postsRouter.post('/',
 postsRouter.get('/',
     ...queryValidationMiddleware,
     async (req: Request, res: Response) => {
+
     const pageWithPosts: contentPageType = await postsService
         .givePostsPage(req.query.sortBy as string,
                        req.query.sortDirection as string,
@@ -40,6 +42,7 @@ postsRouter.get('/',
 })
 
 postsRouter.get('/:id', async (req: Request, res: Response) => {
+
     const post: postType | null = await postsService.givePostById(req.params.id)
 
     if (!post) {
@@ -53,6 +56,7 @@ postsRouter.put('/:id',
     authenticationGuardMiddleware,
     ...postRouterValidation,
     async (req: Request, res: Response) => {
+
         const isUpdate = await postsService
             .updatePost(req.params.id,
                         req.body.title,
@@ -72,6 +76,7 @@ postsRouter.put('/:id',
 postsRouter.delete('/:id',
     authenticationGuardMiddleware,
     async (req: Request, res: Response) => {
+
         const isDeleted = await postsService.deletePostById(req.params.id)
 
         if (isDeleted) {

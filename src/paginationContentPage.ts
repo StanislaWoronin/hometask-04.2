@@ -5,12 +5,13 @@ import {givePagesCount} from "./helperFunctions";
 export const paginationContentPage = (pageNumber: string,
                                       pageSize: string,
                                       content: blogsType | postsType,
-                                      pagesCount: number) => {
+                                      totalCount: number) => {
+
     const pageWithContent = {
-        "pagesCount": pagesCount,
+        "pagesCount": givePagesCount(totalCount, pageSize),
         "page": Number(pageNumber),
         "pageSize": Number(pageSize),
-        "totalCount": givePagesCount(pagesCount, pageSize),
+        "totalCount": totalCount,
         "items": content
     }
 

@@ -7,6 +7,7 @@ import {givePagesCount} from "../helperFunctions";
 
 export const blogsService = {
     async createNewBlog(name: string, youtubeUrl: string): Promise<blogType> {
+
         const newBlog: blogType = {
             id: String(+new Date()),
             name: name,
@@ -22,14 +23,12 @@ export const blogsService = {
                         sortBy: string,
                         sortDirection: string,
                         pageNumber: string, // номер страницы, которая будет возвращена
-                        pageSize: string) // количество элементов на странице
-                            : Promise<contentPageType> {
+                        pageSize: string): Promise<contentPageType> {
 
         const content = await blogsRepository.giveBlogs(searchNameTerm, sortBy, sortDirection, pageNumber, pageSize)
         const totalCount = await blogsRepository.giveTotalCount(searchNameTerm)
-        const pagesCount = givePagesCount(totalCount, pageSize)
 
-        return paginationContentPage(pageNumber, pageSize, content, pagesCount)
+        return paginationContentPage(pageNumber, pageSize, content, totalCount)
     },
 
     async giveBlogById(id: string): Promise<blogType | null> {

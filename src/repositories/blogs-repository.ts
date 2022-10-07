@@ -5,6 +5,7 @@ import {giveSkipNumber} from "../helperFunctions";
 export const blogsRepository = {
     async createNewBlog(newBlog: blogType): Promise<blogType> {
         await blogsCollection.insertOne(newBlog)
+
         return newBlog
     },
 
@@ -38,6 +39,7 @@ export const blogsRepository = {
 
     async giveBlogName (id: string): Promise<string> {
         const blog = await blogsRepository.giveBlogById(id)
+
         if (!blog) {
             return ''
         }
