@@ -76,7 +76,7 @@ blogsRouter.get('/:id/posts',
                        req.query.sortDirection as string,
                        req.query.pageNumber as string,
                        req.query.pageSize as string,
-                       req.params.id as string)
+                       req.query.blogId as string)
 
     res.status(200).send(pageWithPosts)
 })
