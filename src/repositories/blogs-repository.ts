@@ -8,7 +8,7 @@ export const blogsRepository = {
         return newBlog
     },
 
-    async giveBlogs(name: string | null | undefined,
+    async giveBlogs(searchNameTerm: string,
                     sortBy: string,
                     sortDirection: string,
                     pageNumber: string,
@@ -16,8 +16,8 @@ export const blogsRepository = {
 
         const filter: any = {}
 
-        if (name) {
-            filter.name = {$regex: name, $options: 'i'}
+        if (searchNameTerm) {
+            filter.searchNameTerm = {$regex: searchNameTerm, $options: 'i'}
         }
 
         return await blogsCollection
@@ -26,6 +26,10 @@ export const blogsRepository = {
             .skip(giveSkipNumber(pageNumber, pageSize))
             .limit(Number(pageSize))
             .toArray()
+    },
+
+    async giveTotalCount(searchNameTerm: string | null): Promise<number> {
+        return await blogsCollection.countDocuments({searchNameTerm: {$regex: searchNameTerm, $options: 'i'}})
     },
 
     async giveBlogById (id: string): Promise<blogType | null> {

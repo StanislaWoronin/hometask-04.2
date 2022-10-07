@@ -1,18 +1,17 @@
 import {blogsType} from "./types/blogs-type";
 import {postsType} from "./types/posts-type";
-import {pagesCount, totalCount} from "./helperFunctions";
+import {givePagesCount} from "./helperFunctions";
 
-export const paginationContentPage = (sortBy: string,
-                                      sortDirection: string,
-                                      pageNumber: string,
+export const paginationContentPage = (pageNumber: string,
                                       pageSize: string,
-                                      items: blogsType | postsType) => {
+                                      content: blogsType | postsType,
+                                      pagesCount: number) => {
     const pageWithContent = {
-        "pagesCount": pagesCount(pageSize, items),
+        "pagesCount": pagesCount,
         "page": Number(pageNumber),
         "pageSize": Number(pageSize),
-        "totalCount": totalCount(items),
-        "items": items
+        "totalCount": givePagesCount(pagesCount, pageSize),
+        "items": content
     }
 
     return pageWithContent

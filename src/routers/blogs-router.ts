@@ -39,11 +39,11 @@ blogsRouter.get('/',
     ...queryValidationMiddleware,
     async (req: Request, res: Response) => {
     const pageWithBlogs: contentPageType = await blogsService
-        .giveBlogsPage(req.query.name?.toString(),
-                       <string>req.query.sortBy,
-                       <string>req.query.sortDirection,
-                       <string>req.query.pageNumber,
-                       <string>req.query.pageSize) // юрл это строка, почему нужно приводить к строке
+        .giveBlogsPage(req.query.searchNameTerm as string,
+                       req.query.sortBy as string,
+                       req.query.sortDirection as string,
+                       req.query.pageNumber as string,
+                       req.query.pageSize as string)
 
     if (!pageWithBlogs) {
         return res.sendStatus(404)
@@ -65,18 +65,18 @@ blogsRouter.get('/:id', async (req: Request, res: Response) => {
 blogsRouter.get('/:id/posts',
     ...queryValidationMiddleware,
     async (req: Request, res: Response) => {
-    const blog: blogType | null = await blogsService.giveBlogById(req.params.id) // повторение кода
+    const blog: blogType | null = await blogsService.giveBlogById(req.params.id)
 
     if (!blog) {
         return res.sendStatus(404)
     }
 
     const pageWithPosts: contentPageType = await postsService
-        // @ts-ignore
-        .givePostsPage(req.query.sortBy,
-                       req.query.sortDirection,
-                       req.query.pageNumber,
-                       req.query.pageSize)
+        .givePostsPage(req.query.sortBy as string,
+                       req.query.sortDirection as string,
+                       req.query.pageNumber as string,
+                       req.query.pageSize as string,
+                       req.params.id as string)
 
     res.status(200).send(pageWithPosts)
 })
@@ -85,7 +85,7 @@ blogsRouter.put('/:id',
     authenticationGuardMiddleware,
     ...blogRouterValidation,
     async (req: Request, res: Response) => {
-        const isUpdate = await blogsService.updateBlog(req.params.id, req.body.name, req.body.youtubeUrl) // почему здесь не указал булеaн
+        const isUpdate = await blogsService.updateBlog(req.params.id, req.body.name, req.body.youtubeUrl)
 
         if (!isUpdate) {
             return res.sendStatus(404)

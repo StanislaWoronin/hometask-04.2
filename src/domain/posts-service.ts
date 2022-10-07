@@ -3,6 +3,7 @@ import {blogsRepository} from "../repositories/blogs-repository";
 import {postType} from "../types/posts-type";
 import {contentPageType} from "../types/contentPage-type";
 import {paginationContentPage} from "../paginationContentPage";
+import {givePagesCount} from "../helperFunctions";
 
 export const postsService = {
     async createNewPost(title: string, shortDescription: string, content: string, id: string): Promise<postType> {
@@ -23,10 +24,14 @@ export const postsService = {
     async givePostsPage(sortBy: string,
                         sortDirection: string,
                         pageNumber: string,
-                        pageSize: string) : Promise<contentPageType> {
-        const content = await postsRepository.givePosts(sortBy, sortDirection, pageNumber, pageSize)
+                        pageSize: string,
+                        blogId: string) : Promise<contentPageType> {
 
-        return paginationContentPage(sortBy, sortDirection, pageNumber, pageSize, content)
+
+        const content = await postsRepository.givePosts(blogId, sortBy, sortDirection, pageNumber, pageSize)
+        const pagesCount = await postsRepository.giveTotalCount(blogId)
+
+        return paginationContentPage(pageNumber, pageSize, content, pagesCount)
     },
 
     async givePostById(id: string): Promise<postType | null> {

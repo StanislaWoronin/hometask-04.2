@@ -1,5 +1,4 @@
-import {blogsType} from "./types/blogs-type";
-import {postsType} from "./types/posts-type";
+import {blogsRepository} from "./repositories/blogs-repository";
 
 export const giveSkipNumber = (pageNumber: string,
                                pageSize: string) => {
@@ -7,11 +6,11 @@ export const giveSkipNumber = (pageNumber: string,
     return (Number(pageNumber) - 1) * Number(pageSize)
 }
 
-export const totalCount = (items: blogsType | postsType) => {
-    return items.length
+export const totalCount = async (searchNameTerm: string | null) => {
+    return await blogsRepository.giveTotalCount(searchNameTerm)
 }
 
-export const pagesCount = (pageSize: string, items: blogsType | postsType) => {
-    return Math.ceil(items.length / Number(pageSize))
+export const givePagesCount = (totalCount: number, pageSize: string) => {
+    return Math.ceil(totalCount / Number(pageSize))
 }
 

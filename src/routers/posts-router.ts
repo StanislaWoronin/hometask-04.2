@@ -26,11 +26,11 @@ postsRouter.get('/',
     ...queryValidationMiddleware,
     async (req: Request, res: Response) => {
     const pageWithPosts: contentPageType = await postsService
-        // @ts-ignore
-        .givePostsPage(req.query.sortBy,
-                      req.query.sortDirection,
-                      req.query.pageNumber,
-                      req.query.pageSize)
+        .givePostsPage(req.query.sortBy as string,
+                       req.query.sortDirection as string,
+                       req.query.pageNumber as string,
+                       req.query.pageSize as string,
+                       req.query.blogId as string)
 
     if (!pageWithPosts) {
         return res.sendStatus(404)
@@ -53,7 +53,12 @@ postsRouter.put('/:id',
     authenticationGuardMiddleware,
     ...postRouterValidation,
     async (req: Request, res: Response) => {
-        const isUpdate = await postsService.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
+        const isUpdate = await postsService
+            .updatePost(req.params.id,
+                        req.body.title,
+                        req.body.shortDescription,
+                        req.body.content,
+                        req.body.blogId)
 
         if (!isUpdate) {
             return res.sendStatus(404)
