@@ -2,8 +2,6 @@ import {blogsRepository} from "../repositories/blogs-repository";
 import {blogType} from "../types/blogs-type";
 import {contentPageType} from "../types/contentPage-type";
 import {paginationContentPage} from "../paginationContentPage";
-import {givePagesCount} from "../helperFunctions";
-
 
 export const blogsService = {
     async createNewBlog(name: string, youtubeUrl: string): Promise<blogType> {
