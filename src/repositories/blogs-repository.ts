@@ -1,19 +1,19 @@
 import {blogsCollection} from "./db";
-import {blogsType, blogType} from "../types/blogs-type";
+import {BlogsType, BlogType} from "../types/blogs-type";
 import {giveSkipNumber} from "../helperFunctions";
 
 export const blogsRepository = {
-    async createNewBlog(newBlog: blogType): Promise<blogType> {
+    async createNewBlog(newBlog: BlogType): Promise<BlogType> {
         await blogsCollection.insertOne(newBlog)
 
         return newBlog
     },
 
-    async giveBlogs(searchNameTerm: string,
+    async giveBlogs(searchNameTerm: string | null,
                     sortBy: string,
                     sortDirection: string,
                     pageNumber: string,
-                    pageSize: string): Promise<blogsType> {
+                    pageSize: string): Promise<BlogsType> {
 
         const filter: any = {}
 
@@ -33,7 +33,7 @@ export const blogsRepository = {
         return await blogsCollection.countDocuments({searchNameTerm: {$regex: searchNameTerm, $options: 'i'}})
     },
 
-    async giveBlogById (id: string): Promise<blogType | null> {
+    async giveBlogById (id: string): Promise<BlogType | null> {
         return await blogsCollection.findOne({id: id}, {projection: {_id: false}})
     },
 

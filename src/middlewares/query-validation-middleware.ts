@@ -1,69 +1,78 @@
 import {NextFunction, Request, Response} from "express";
+import {SortDescriptionType, SortParameters} from "../types/queryParams-type";
 
-const sortByValidation = (req: Request, res: Response, next: NextFunction) => {
-    const sortParameters = ['id', 'name', 'youtubeUrl', 'createdAt', 'title', 'shortDescription', 'content', 'blogId', 'blogName', 'createdAt']
+const sortByValidation = (req: Request<{}, {}, {}, {sortBy: SortParameters}>,
+                          res: Response,
+                          next: NextFunction) => {
+
+    const sortParameters = Object.values(SortParameters)
     const sortBy = req.query.sortBy
 
-    if (!sortBy) {
-        return req.query.sortBy = 'createdAt'
+    if (typeof sortBy !== 'string') {
+        req.query.sortBy = SortParameters.CreatedAt // 'createdAt'
     }
 
-    if (sortParameters.indexOf(sortBy.toString()) === - 1) {
-        return req.query.sortBy = 'createdAt'
+    if (!sortParameters.includes(sortBy)) {
+        req.query.sortBy = SortParameters.CreatedAt
     }
 
     next()
 }
 
-const sortDirectionValidation = (req: Request, res: Response, next: NextFunction) => {
-    const direction = req.query.direction
+const sortDirectionValidation = (req: Request<{}, {}, {}, {sortDirection: SortDescriptionType}>,
+                                 res: Response,
+                                 next: NextFunction) => {
 
-    if (!direction) {
-        return req.query.direction = 'desc'
+    const sortDescriptionType = Object.values(SortDescriptionType)
+    const sortDirection = req.query.sortDirection
+
+    if (!sortDirection) {
+        req.query.sortDirection = SortDescriptionType.Distending
     }
 
-    if (direction.toString() !== 'asc' || direction.toString() !== 'desc') {
-        return req.query.direction = 'desc'
+    if (!sortDescriptionType.includes(sortDirection)) {
+        req.query.sortDirection = SortDescriptionType.Distending
     }
 
     next()
 }
 
 const pageNumberValidation = (req: Request, res: Response, next: NextFunction) => {
+
     const pageNumber = req.query.pageNumber
 
     if (!pageNumber) {
-        return req.query.pageNumber = '1'
+        req.query.pageNumber = '1'
     }
 
     if (isNaN(Number(pageNumber))) {
-        return req.query.pageNumber = '1'
+        req.query.pageNumber = '1'
     }
 
     if (Number(pageNumber) < 0) {
-        return req.query.pageNumber = '1'
+        req.query.pageNumber = '1'
     }
 
     next()
 }
 
 const pageSizeValidation = (req: Request, res: Response, next: NextFunction) => {
+
     const pageSize = req.query.pageSize
 
     if (!pageSize) {
-        return req.query.pageSize = '10'
+        req.query.pageSize = '10'
     }
 
     if (isNaN(Number(pageSize))) {
-        return req.query.pageSize = '10'
+        req.query.pageSize = '10'
     }
 
     if (Number(pageSize) < 0) {
-        return req.query.pageSize = '10'
+        req.query.pageSize = '10'
     }
 
     next()
 }
 
 export const queryValidationMiddleware = [sortByValidation, sortDirectionValidation, pageNumberValidation, pageSizeValidation]
-

@@ -1,19 +1,19 @@
 import {postsCollection} from "./db";
-import {postsType, postType} from "../types/posts-type";
+import {PostsType, PostType} from "../types/posts-type";
 import {giveSkipNumber} from "../helperFunctions";
 
 export const postsRepository = {
-    async createNewPost(newPost: postType): Promise<postType> {
+    async createNewPost(newPost: PostType): Promise<PostType> {
         await postsCollection.insertOne(newPost)
 
         return newPost
     },
 
     async givePosts(sortBy: string,
-                    sortDirection: string,
+                    sortDirection: 'asc' | 'desc',
                     pageNumber: string,
                     pageSize: string,
-                    blogId?: string): Promise<postsType> {
+                    blogId?: string): Promise<PostsType> {
 
         const filter: any = {}
 
@@ -33,12 +33,12 @@ export const postsRepository = {
         return await postsCollection.countDocuments({blogId: {$regex: blogId, $options: 'i'}})
     },
 
-    async givePostById(id: string): Promise<postType | null> {
+    async givePostById(id: string): Promise<PostType | null> {
        return await postsCollection.findOne({id:id}, {projection: {_id: false}})
     },
 
-    async updatePost(id: string, title: string, shortDescription: string, content: string, blogId: string): Promise<boolean> {
-        const result = await postsCollection.updateOne({id: id}, {$set: {title: title, shortDescription: shortDescription, content: content, blogId: blogId}})
+    async updatePost(id: string, title: string, content: string, blogId: string): Promise<boolean> {
+        const result = await postsCollection.updateOne({id: id}, {$set: {title: title, content: content, blogId: blogId}})
 
         return result.matchedCount === 1
     },

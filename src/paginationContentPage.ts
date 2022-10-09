@@ -1,10 +1,10 @@
-import {blogsType} from "./types/blogs-type";
-import {postsType} from "./types/posts-type";
+import {BlogsType} from "./types/blogs-type";
+import {PostsType} from "./types/posts-type";
 import {givePagesCount} from "./helperFunctions";
 
 export const paginationContentPage = (pageNumber: string,
                                       pageSize: string,
-                                      content: blogsType | postsType,
+                                      content: BlogsType | PostsType,
                                       totalCount: number) => {
 
     const pageWithContent = {

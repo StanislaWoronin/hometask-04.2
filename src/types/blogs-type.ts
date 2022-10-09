@@ -1,8 +1,8 @@
-export type blogType = {
+export type BlogType = {
     id: string,
     name: string,
     youtubeUrl: string,
     createdAt: string
 }
 
-export type blogsType = blogType[]
+export type BlogsType = BlogType[]

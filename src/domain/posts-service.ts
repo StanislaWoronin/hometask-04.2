@@ -1,19 +1,19 @@
 import {postsRepository} from "../repositories/posts-repository";
 import {blogsRepository} from "../repositories/blogs-repository";
-import {postType} from "../types/posts-type";
-import {contentPageType} from "../types/contentPage-type";
+import {PostType} from "../types/posts-type";
+import {ContentPageType} from "../types/content-page-type";
 import {paginationContentPage} from "../paginationContentPage";
-import {givePagesCount} from "../helperFunctions";
 
 export const postsService = {
     async createNewPost(title: string,
-                        shortDescription: string,
-                        content: string, id: string): Promise<postType> {
+                        sortDescription: 'asc' | 'desc',
+                        content: string,
+                        id: string): Promise<PostType> {
 
-        const newPost: postType = {
+        const newPost: PostType = {
             id: String(+new Date()),
             title: title,
-            shortDescription: shortDescription,
+            sortDescription: 'asc' || 'desc',
             content: content,
             blogId: id,
             blogName: await blogsRepository.giveBlogName(id),
@@ -25,28 +25,27 @@ export const postsService = {
     },
 
     async givePostsPage(sortBy: string,
-                        sortDirection: string,
+                        sortDirection: 'asc' | 'desc',
                         pageNumber: string,
                         pageSize: string,
-                        blogId: string) : Promise<contentPageType> {
+                        blogId: string) : Promise<ContentPageType> {
 
-        const content = await postsRepository.givePosts(blogId, sortBy, sortDirection, pageNumber, pageSize)
+        const content = await postsRepository.givePosts(sortBy, sortDirection, pageNumber, pageSize, blogId)
         const totalCount = await postsRepository.giveTotalCount(blogId)
 
         return paginationContentPage(pageNumber, pageSize, content, totalCount)
     },
 
-    async givePostById(id: string): Promise<postType | null> {
+    async givePostById(id: string): Promise<PostType | null> {
         return await postsRepository.givePostById(id)
     },
 
     async updatePost(id: string,
                      title: string,
-                     shortDescription: string,
                      content: string,
                      blogId: string): Promise<boolean> {
 
-        return await postsRepository.updatePost(id, title, shortDescription, content, blogId)
+        return await postsRepository.updatePost(id, title, content, blogId)
     },
 
     async deletePostById(id: string): Promise<boolean> {

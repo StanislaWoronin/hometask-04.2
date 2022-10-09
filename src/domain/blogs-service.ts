@@ -1,12 +1,12 @@
 import {blogsRepository} from "../repositories/blogs-repository";
-import {blogType} from "../types/blogs-type";
-import {contentPageType} from "../types/contentPage-type";
+import {BlogType} from "../types/blogs-type";
+import {ContentPageType} from "../types/content-page-type";
 import {paginationContentPage} from "../paginationContentPage";
 
 export const blogsService = {
-    async createNewBlog(name: string, youtubeUrl: string): Promise<blogType> {
+    async createNewBlog(name: string, youtubeUrl: string): Promise<BlogType> {
 
-        const newBlog: blogType = {
+        const newBlog: BlogType = {
             id: String(+new Date()),
             name: name,
             youtubeUrl: youtubeUrl,
@@ -17,11 +17,11 @@ export const blogsService = {
         return newBlog
     },
 
-    async giveBlogsPage(searchNameTerm: string,
+    async giveBlogsPage(searchNameTerm: string | null,
                         sortBy: string,
                         sortDirection: string,
                         pageNumber: string, // номер страницы, которая будет возвращена
-                        pageSize: string): Promise<contentPageType> {
+                        pageSize: string): Promise<ContentPageType> {
 
         const content = await blogsRepository.giveBlogs(searchNameTerm, sortBy, sortDirection, pageNumber, pageSize)
         const totalCount = await blogsRepository.giveTotalCount(searchNameTerm)
@@ -29,7 +29,7 @@ export const blogsService = {
         return paginationContentPage(pageNumber, pageSize, content, totalCount)
     },
 
-    async giveBlogById(id: string): Promise<blogType | null> {
+    async giveBlogById(id: string): Promise<BlogType | null> {
         return await blogsRepository.giveBlogById(id)
     },
 
