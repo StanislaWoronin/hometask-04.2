@@ -1,7 +1,7 @@
 export type PostType = {
     id: string,
     title: string,
-    sortDescription: 'asc' | 'desc',
+    shortDescription: string
     content: string,
     blogId: string,
     blogName: string,

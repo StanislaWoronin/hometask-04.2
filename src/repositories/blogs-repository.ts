@@ -15,14 +15,8 @@ export const blogsRepository = {
                     pageNumber: string,
                     pageSize: string): Promise<BlogsType> {
 
-        const filter: any = {}
-
-        if (searchNameTerm) {
-            filter.searchNameTerm = {$regex: searchNameTerm, $options: 'i'}
-        }
-
         return await blogsCollection
-            .find(filter, {projection: {_id: false}})
+            .find({searchNameTerm: {$regex: searchNameTerm, $options: 'i'}})
             .sort(sortBy, sortDirection === 'asc' ? 1 : -1)
             .skip(giveSkipNumber(pageNumber, pageSize))
             .limit(Number(pageSize))

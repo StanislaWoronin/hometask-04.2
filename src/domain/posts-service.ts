@@ -6,14 +6,14 @@ import {paginationContentPage} from "../paginationContentPage";
 
 export const postsService = {
     async createNewPost(title: string,
-                        sortDescription: 'asc' | 'desc',
+                        shortDescription: string,
                         content: string,
                         id: string): Promise<PostType> {
 
         const newPost: PostType = {
             id: String(+new Date()),
             title: title,
-            sortDescription: 'asc' || 'desc',
+            shortDescription: shortDescription,
             content: content,
             blogId: id,
             blogName: await blogsRepository.giveBlogName(id),
