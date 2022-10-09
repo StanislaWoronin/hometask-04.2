@@ -2,6 +2,7 @@ import {postsRepository} from "../repositories/posts-repository";
 import {blogsRepository} from "../repositories/blogs-repository";
 import {PostType} from "../types/posts-type";
 import {ContentPageType} from "../types/content-page-type";
+
 import {paginationContentPage} from "../paginationContentPage";
 
 export const postsService = {
@@ -42,10 +43,11 @@ export const postsService = {
 
     async updatePost(id: string,
                      title: string,
+                     shortDescription: string,
                      content: string,
                      blogId: string): Promise<boolean> {
 
-        return await postsRepository.updatePost(id, title, content, blogId)
+        return await postsRepository.updatePost(id, title, shortDescription, content, blogId)
     },
 
     async deletePostById(id: string): Promise<boolean> {

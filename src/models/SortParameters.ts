@@ -1,4 +1,4 @@
-export enum SortDescriptionType {
+export enum SortDirection {
     Ascending = 'asc',
     Distending = 'desc'
 }
@@ -12,13 +12,4 @@ export enum SortParameters {
     Content = 'content',
     BlogId = 'blogId',
     BlogName = 'blogName',
-}
-
-export type InputQueryParamsType = {
-    searchNameTerm: string | null,
-    sortBy: string,
-    sortDirection: 'asc' | 'desc',
-    pageNumber: string,
-    pageSize: string,
-    blogId: string
 }

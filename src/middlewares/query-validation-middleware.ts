@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from "express";
-import {SortDescriptionType, SortParameters} from "../types/queryParams-type";
+import {SortDirection, SortParameters} from "../models/SortParameters";
 
 const sortByValidation = (req: Request<{}, {}, {}, {sortBy: SortParameters}>,
                           res: Response,
@@ -8,7 +8,7 @@ const sortByValidation = (req: Request<{}, {}, {}, {sortBy: SortParameters}>,
     const sortParameters = Object.values(SortParameters)
     const sortBy = req.query.sortBy
 
-    if (typeof sortBy !== 'string') {
+    if (!sortBy) {
         req.query.sortBy = SortParameters.CreatedAt // 'createdAt'
     }
 
@@ -19,25 +19,25 @@ const sortByValidation = (req: Request<{}, {}, {}, {sortBy: SortParameters}>,
     next()
 }
 
-const sortDirectionValidation = (req: Request<{}, {}, {}, {sortDirection: SortDescriptionType}>,
+const sortDirectionValidation = (req: Request<{}, {}, {}, {sortDirection: SortDirection}>,
                                  res: Response,
                                  next: NextFunction) => {
 
-    const sortDescriptionType = Object.values(SortDescriptionType)
+    const sortDirections = Object.values(SortDirection)
     const sortDirection = req.query.sortDirection
 
     if (!sortDirection) {
-        req.query.sortDirection = SortDescriptionType.Distending
+        req.query.sortDirection = SortDirection.Distending
     }
 
-    if (!sortDescriptionType.includes(sortDirection)) {
-        req.query.sortDirection = SortDescriptionType.Distending
+    if (!sortDirections.includes(sortDirection)) {
+        req.query.sortDirection = SortDirection.Distending
     }
 
     next()
 }
 
-const pageNumberValidation = (req: Request, res: Response, next: NextFunction) => {
+const pageNumberValidation = (req: Request<{}, {}, {}, {pageNumber: string}>, res: Response, next: NextFunction) => {
 
     const pageNumber = req.query.pageNumber
 
@@ -56,7 +56,7 @@ const pageNumberValidation = (req: Request, res: Response, next: NextFunction) =
     next()
 }
 
-const pageSizeValidation = (req: Request, res: Response, next: NextFunction) => {
+const pageSizeValidation = (req: Request<{}, {}, {}, {pageSize: string}>, res: Response, next: NextFunction) => {
 
     const pageSize = req.query.pageSize
 

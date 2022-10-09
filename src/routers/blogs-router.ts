@@ -1,21 +1,34 @@
-import {Request, Response, Router} from "express";
+import {Response, Router} from "express";
+
 import {blogRouterValidation} from "../middlewares/blogRouter-validation-middleware";
 import {postForBlogValidation} from "../middlewares/postRouter-validation-middleware";
-import {blogsService} from "../domain/blogs-service";
-import {postsService} from "../domain/posts-service";
-import {BlogType} from "../types/blogs-type";
-import {ContentPageType} from "../types/content-page-type";
 import {authenticationGuardMiddleware} from "../middlewares/authentication-guard-middleware";
 import {queryValidationMiddleware} from "../middlewares/query-validation-middleware";
-import {InputQueryParamsType} from "../types/queryParams-type";
+
+import {blogsService} from "../domain/blogs-service";
+import {postsService} from "../domain/posts-service";
+
+import {BlogsCreateNewBlog} from "../models/BlogsCreateNewBlog";
+import {BlogsUpdateBlog} from "../models/BlogsUpdateBlog";
+import {InputQueryParams} from "../models/InputQueryParams";
+import {BlogsCreateNewPost} from "../models/BlogCreateNewPost";
+import {URIParams} from "../models/URIParams";
+
+import {BlogType} from "../types/blogs-type";
 import {PostType} from "../types/posts-type";
+import {ContentPageType} from "../types/content-page-type";
+import {RequestWithBody,
+    RequestWithParams,
+    RequestWithParamsAndBody,
+    RequestWithParamsAndQuery,
+    RequestWithQuery} from "../types/request-types";
 
 export const blogsRouter = Router({})
 
 blogsRouter.post('/',
     authenticationGuardMiddleware,
     ...blogRouterValidation,
-    async (req: Request,
+    async (req: RequestWithBody<BlogsCreateNewBlog>,
            res: Response<BlogType>) => {
 
         const newBlog = await blogsService.createNewBlog(req.body.name, req.body.youtubeUrl)
@@ -27,7 +40,7 @@ blogsRouter.post('/',
 blogsRouter.post('/:id/posts',
     authenticationGuardMiddleware,
     ...postForBlogValidation,
-    async (req: Request<{id: string}>,
+    async (req: RequestWithParamsAndBody<URIParams, BlogsCreateNewPost>,
            res: Response<PostType>) => {
 
         const existsBlog = await blogsService.giveBlogById(req.params.id)
@@ -44,7 +57,7 @@ blogsRouter.post('/:id/posts',
 blogsRouter.get('/',
     // @ts-ignore
     ...queryValidationMiddleware,
-    async (req: Request<{}, {}, {}, InputQueryParamsType>,
+    async (req: RequestWithQuery<InputQueryParams>,
            res: Response<ContentPageType>) => {
 
     const pageWithBlogs: ContentPageType = await blogsService
@@ -62,7 +75,7 @@ blogsRouter.get('/',
 })
 
 blogsRouter.get('/:id',
-    async (req: Request<{id: string}>,
+    async (req: RequestWithParams<URIParams>,
                    res: Response<BlogType>) => {
 
     const blog = await blogsService.giveBlogById(req.params.id)
@@ -77,7 +90,7 @@ blogsRouter.get('/:id',
 blogsRouter.get('/:id/posts',
     // @ts-ignore
     ...queryValidationMiddleware,
-    async (req: Request<{id: string}, {}, {}, InputQueryParamsType>,
+    async (req: RequestWithParamsAndQuery<URIParams, InputQueryParams>,
            res: Response<ContentPageType>) => {
 
     const blog: BlogType | null = await blogsService.giveBlogById(req.params.id)
@@ -85,6 +98,8 @@ blogsRouter.get('/:id/posts',
     if (!blog) {
         return res.sendStatus(404)
     }
+
+    req.query.blogId = req.params.id
 
     const pageWithPosts = await postsService
         .givePostsPage(req.query.sortBy,
@@ -99,7 +114,7 @@ blogsRouter.get('/:id/posts',
 blogsRouter.put('/:id',
     authenticationGuardMiddleware,
     ...blogRouterValidation,
-    async (req: Request<{id: string}>,
+    async (req: RequestWithParamsAndBody<URIParams, BlogsUpdateBlog>,
            res: Response<BlogType | null>) => {
 
         const isUpdate = await blogsService.updateBlog(req.params.id, req.body.name, req.body.youtubeUrl)
@@ -115,7 +130,7 @@ blogsRouter.put('/:id',
 
 blogsRouter.delete('/:id',
     authenticationGuardMiddleware,
-    async (req: Request<{id: string}>,
+    async (req: RequestWithParams<URIParams>,
            res: Response) => {
 
         const isDeleted = await blogsService.deleteBlogById(req.params.id)

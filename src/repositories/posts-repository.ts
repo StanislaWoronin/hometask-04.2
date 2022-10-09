@@ -37,8 +37,8 @@ export const postsRepository = {
        return await postsCollection.findOne({id:id}, {projection: {_id: false}})
     },
 
-    async updatePost(id: string, title: string, content: string, blogId: string): Promise<boolean> {
-        const result = await postsCollection.updateOne({id: id}, {$set: {title: title, content: content, blogId: blogId}})
+    async updatePost(id: string, title: string, shortDescription: string, content: string, blogId: string): Promise<boolean> {
+        const result = await postsCollection.updateOne({id: id}, {$set: {title: title, shortDescription: shortDescription, content: content, blogId: blogId}})
 
         return result.matchedCount === 1
     },
