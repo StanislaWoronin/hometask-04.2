@@ -1,11 +1,12 @@
+import * as dotenv from "dotenv";
 import {MongoClient} from 'mongodb';
 import {BlogType} from "../types/blogs-type";
 import {PostType} from "../types/posts-type";
-import * as dotenv from "dotenv";
+
 dotenv.config()
-
-const mongoUri = process.env.mongoURI || 'mongodb://0.0.0.0:27017/?maxPoolSize=20&w=majority';
-
+//const mongoUri = process.env.MONGO_URI || 'mongodb://0.0.0.0:27017/?maxPoolSize=20&w=majority';
+const mongoUri = process.env.MONGO_URI || ""
+console.log(mongoUri)
 const client = new MongoClient(mongoUri)
 const db = client.db('blogsAndPostsDb')
 

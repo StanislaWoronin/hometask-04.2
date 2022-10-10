@@ -1,4 +1,4 @@
-export type InputQueryParams = {
+export type QueryParams = {
     /**
      *  Input query params
      */

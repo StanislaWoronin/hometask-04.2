@@ -6,7 +6,7 @@ import {queryValidationMiddleware} from "../middlewares/query-validation-middlew
 
 import {postsService} from "../domain/posts-service";
 
-import {InputQueryParams} from "../models/InputQueryParams";
+import {QueryParams} from "../models/QueryParams";
 import {PostsCreateNewPost} from "../models/PostsCreateNewPost";
 import {PostsUpdatePost} from "../models/PostsUpdatePost";
 import {URIParams} from "../models/URIParams";
@@ -38,7 +38,7 @@ postsRouter.post('/',
 
 postsRouter.get('/',
     ...queryValidationMiddleware,
-    async (req: RequestWithQuery<InputQueryParams>,
+    async (req: RequestWithQuery<QueryParams>,
            res: Response<ContentPageType>) => {
 
     const pageWithPosts: ContentPageType = await postsService

@@ -10,7 +10,7 @@ import {postsService} from "../domain/posts-service";
 
 import {BlogsCreateNewBlog} from "../models/BlogsCreateNewBlog";
 import {BlogsUpdateBlog} from "../models/BlogsUpdateBlog";
-import {InputQueryParams} from "../models/InputQueryParams";
+import {QueryParams} from "../models/QueryParams";
 import {BlogsCreateNewPost} from "../models/BlogCreateNewPost";
 import {URIParams} from "../models/URIParams";
 
@@ -56,11 +56,11 @@ blogsRouter.post('/:id/posts',
 
 blogsRouter.get('/',
     ...queryValidationMiddleware,
-    async (req: RequestWithQuery<InputQueryParams>,
+    async (req: RequestWithQuery<QueryParams>,
            res: Response<ContentPageType>) => {
 
     const pageWithBlogs: ContentPageType = await blogsService
-        .giveBlogsPage(req.query.searchNameTerm,
+        .giveBlogsPage(req.query.searchNameTerm? req.query.searchNameTerm : null,
                        req.query.sortBy,
                        req.query.sortDirection,
                        req.query.pageNumber,
@@ -88,7 +88,7 @@ blogsRouter.get('/:id',
 
 blogsRouter.get('/:id/posts',
     ...queryValidationMiddleware,
-    async (req: RequestWithParamsAndQuery<URIParams, InputQueryParams>,
+    async (req: RequestWithParamsAndQuery<URIParams, QueryParams>,
            res: Response<ContentPageType>) => {
 
     const blog: BlogType | null = await blogsService.giveBlogById(req.params.id)

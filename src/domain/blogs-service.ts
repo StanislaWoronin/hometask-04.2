@@ -17,10 +17,10 @@ export const blogsService = {
         return newBlog
     },
 
-    async giveBlogsPage(searchNameTerm: string | null,
+    async giveBlogsPage(searchNameTerm: string  | null,
                         sortBy: string,
                         sortDirection: string,
-                        pageNumber: string, // номер страницы, которая будет возвращена
+                        pageNumber: string,
                         pageSize: string): Promise<ContentPageType> {
 
         const content = await blogsRepository.giveBlogs(searchNameTerm, sortBy, sortDirection, pageNumber, pageSize)
