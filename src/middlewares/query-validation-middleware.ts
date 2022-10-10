@@ -1,7 +1,10 @@
-import {NextFunction, Request, Response} from "express";
+import {NextFunction, Request, RequestParamHandler, Response} from "express";
 import {SortDirection, SortParameters} from "../models/SortParameters";
+import {URIParams} from "../models/URIParams";
+import {RequestWithParamsAndQuery} from "../types/request-types";
+import {InputQueryParams} from "../models/InputQueryParams";
 
-const sortByValidation = (req: Request<{}, {}, {}, {sortBy: SortParameters}>,
+const sortByValidation = (req: RequestWithParamsAndQuery<URIParams, InputQueryParams>,
                           res: Response,
                           next: NextFunction) => {
 
@@ -12,14 +15,13 @@ const sortByValidation = (req: Request<{}, {}, {}, {sortBy: SortParameters}>,
         req.query.sortBy = SortParameters.CreatedAt // 'createdAt'
     }
 
-    if (!sortParameters.includes(sortBy)) {
+    if (!sortParameters.includes(sortBy as SortParameters)) {
         req.query.sortBy = SortParameters.CreatedAt
     }
-
     next()
 }
 
-const sortDirectionValidation = (req: Request<{}, {}, {}, {sortDirection: SortDirection}>,
+const sortDirectionValidation = (req: RequestWithParamsAndQuery<URIParams, InputQueryParams>,
                                  res: Response,
                                  next: NextFunction) => {
 
@@ -30,7 +32,7 @@ const sortDirectionValidation = (req: Request<{}, {}, {}, {sortDirection: SortDi
         req.query.sortDirection = SortDirection.Distending
     }
 
-    if (!sortDirections.includes(sortDirection)) {
+    if (!sortDirections.includes(sortDirection as SortDirection)) {
         req.query.sortDirection = SortDirection.Distending
     }
 

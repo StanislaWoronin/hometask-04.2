@@ -55,7 +55,6 @@ blogsRouter.post('/:id/posts',
 )
 
 blogsRouter.get('/',
-    // @ts-ignore
     ...queryValidationMiddleware,
     async (req: RequestWithQuery<InputQueryParams>,
            res: Response<ContentPageType>) => {
@@ -88,7 +87,6 @@ blogsRouter.get('/:id',
 })
 
 blogsRouter.get('/:id/posts',
-    // @ts-ignore
     ...queryValidationMiddleware,
     async (req: RequestWithParamsAndQuery<URIParams, InputQueryParams>,
            res: Response<ContentPageType>) => {

@@ -37,7 +37,6 @@ postsRouter.post('/',
 )
 
 postsRouter.get('/',
-    // @ts-ignore
     ...queryValidationMiddleware,
     async (req: RequestWithQuery<InputQueryParams>,
            res: Response<ContentPageType>) => {
