@@ -16,7 +16,7 @@ export const blogsRepository = {
                     pageSize: string): Promise<BlogsType> {
 
         return await blogsCollection
-            .find({name: {$regex: searchNameTerm ? searchNameTerm : '', $options: 'i'}})
+            .find({name: {$regex: searchNameTerm ? searchNameTerm : '', $options: 'i'}}, {projection: {_id: false}})
             .sort(sortBy, sortDirection === 'asc' ? 1 : -1)
             .skip(giveSkipNumber(pageNumber, pageSize))
             .limit(Number(pageSize))
@@ -24,7 +24,7 @@ export const blogsRepository = {
     },
 
     async giveTotalCount(searchNameTerm: string | null): Promise<number> {
-        return await blogsCollection.countDocuments({searchNameTerm: {$regex: searchNameTerm, $options: 'i'}})
+        return await blogsCollection.countDocuments({name: {$regex: searchNameTerm ? searchNameTerm : '', $options: 'i'}})
     },
 
     async giveBlogById (id: string): Promise<BlogType | null> {
