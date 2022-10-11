@@ -14,9 +14,9 @@ import {URIParams} from "../models/URIParams";
 import {PostType} from "../types/posts-type";
 import {ContentPageType} from "../types/content-page-type";
 import {RequestWithBody,
-    RequestWithParams,
-    RequestWithParamsAndBody,
-    RequestWithQuery} from "../types/request-types";
+        RequestWithParams,
+        RequestWithParamsAndBody,
+        RequestWithQuery} from "../types/request-types";
 
 export const postsRouter = Router({})
 

@@ -14,16 +14,17 @@ export const blogsRepository = {
                     sortDirection: string,
                     pageNumber: string,
                     pageSize: string): Promise<BlogsType> {
+
         return await blogsCollection
-            .find({name: {$regex: searchNameTerm ? searchNameTerm: "", $options: 'i'}})
-            .sort(sortBy, sortDirection? 'desc' : 'asc')
+            .find({name: {$regex: searchNameTerm ? searchNameTerm : '', $options: 'i'}})
+            .sort(sortBy, sortDirection === 'asc' ? 1 : -1)
             .skip(giveSkipNumber(pageNumber, pageSize))
             .limit(Number(pageSize))
             .toArray()
     },
 
-    async giveTotalCount(searchNameTerm: string  | null): Promise<number> {
-        return await blogsCollection.countDocuments({name: {$regex: searchNameTerm ? searchNameTerm : "" , $options: 'i'}})
+    async giveTotalCount(searchNameTerm: string | null): Promise<number> {
+        return await blogsCollection.countDocuments({searchNameTerm: {$regex: searchNameTerm, $options: 'i'}})
     },
 
     async giveBlogById (id: string): Promise<BlogType | null> {

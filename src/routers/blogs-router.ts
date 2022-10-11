@@ -18,10 +18,10 @@ import {BlogType} from "../types/blogs-type";
 import {PostType} from "../types/posts-type";
 import {ContentPageType} from "../types/content-page-type";
 import {RequestWithBody,
-    RequestWithParams,
-    RequestWithParamsAndBody,
-    RequestWithParamsAndQuery,
-    RequestWithQuery} from "../types/request-types";
+        RequestWithParams,
+        RequestWithParamsAndBody,
+        RequestWithParamsAndQuery,
+        RequestWithQuery} from "../types/request-types";
 
 export const blogsRouter = Router({})
 
