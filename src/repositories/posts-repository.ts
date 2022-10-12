@@ -29,7 +29,7 @@ export const postsRepository = {
             .toArray()
     },
 
-    async giveTotalCount(blogId: string): Promise<number> {
+    async giveTotalCount(blogId?: string): Promise<number> {
 
         if (!blogId) {
             blogId = ''

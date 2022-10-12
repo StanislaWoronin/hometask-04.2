@@ -22,8 +22,6 @@ import {RequestWithBody,
     RequestWithParamsAndBody,
     RequestWithParamsAndQuery,
     RequestWithQuery} from "../types/request-types";
-import {InputParametersType} from "../types/inputParameters-type";
-import {giveInputParameters} from "../inputParameters";
 
 export const blogsRouter = Router({})
 
@@ -32,9 +30,6 @@ blogsRouter.post('/',
     ...blogRouterValidation,
     async (req: RequestWithBody<BlogsCreateNewBlog>,
            res: Response<BlogType>) => {
-
-        //const inputParameters: InputParametersType = giveInputParameters(req)
-        //const newBlog = await blogsService.createNewBlog(inputParameters)
 
         const newBlog = await blogsService.createNewBlog(req.body.name, req.body.youtubeUrl)
 
@@ -102,14 +97,12 @@ blogsRouter.get('/:id/posts',
         return res.sendStatus(404)
     }
 
-    req.query.blogId = req.params.id
-
     const pageWithPosts = await postsService
         .givePostsPage(req.query.sortBy,
                        req.query.sortDirection,
                        req.query.pageNumber,
                        req.query.pageSize,
-                       req.query.blogId)
+                       req.params.id)
 
     res.status(200).send(pageWithPosts)
 })
