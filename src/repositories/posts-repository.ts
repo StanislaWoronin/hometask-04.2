@@ -13,29 +13,19 @@ export const postsRepository = {
                     sortDirection: 'asc' | 'desc',
                     pageNumber: string,
                     pageSize: string,
-                    blogId?: string): Promise<PostsType> {
-
-        const filter: any = {}
-
-        if (blogId) {
-            filter.blogId = blogId
-        }
+                    blogId: string | undefined): Promise<PostsType> {
 
         return await postsCollection
-            .find(filter, {projection: {_id: false}})
+            .find({blogId: {$regex: blogId ? blogId : '', $options: 'i'}}, {projection: {_id: false}})
             .sort(sortBy, sortDirection === 'asc' ? 1 : -1)
             .skip(giveSkipNumber(pageNumber, pageSize))
             .limit(Number(pageSize))
             .toArray()
     },
 
-    async giveTotalCount(blogId?: string): Promise<number> {
+    async giveTotalCount(blogId: string | undefined): Promise<number> {
 
-        if (!blogId) {
-            blogId = ''
-        }
-
-        return await postsCollection.countDocuments({blogId: blogId, $options: 'i'})
+        return await postsCollection.countDocuments({blogId: {$regex: blogId ? blogId : '', $options: 'i'}})
     },
 
     async givePostById(id: string): Promise<PostType | null> {

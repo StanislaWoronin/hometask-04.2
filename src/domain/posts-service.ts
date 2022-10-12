@@ -9,15 +9,15 @@ export const postsService = {
     async createNewPost(title: string,
                         shortDescription: string,
                         content: string,
-                        id: string): Promise<PostType> {
+                        blogId: string): Promise<PostType> {
 
         const newPost: PostType = {
             id: String(+new Date()),
             title,
             shortDescription,
             content,
-            blogId: id,
-            blogName: await blogsRepository.giveBlogName(id),
+            blogId,
+            blogName: await blogsRepository.giveBlogName(blogId),
             createdAt: new Date().toISOString()
         }
 
