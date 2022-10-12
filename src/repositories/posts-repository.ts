@@ -30,7 +30,12 @@ export const postsRepository = {
     },
 
     async giveTotalCount(blogId: string): Promise<number> {
-        return await postsCollection.countDocuments({blogId: {$regex: blogId, $options: 'i'}})
+
+        if (!blogId) {
+            blogId = ''
+        }
+
+        return await postsCollection.countDocuments({blogId: blogId, $options: 'i'})
     },
 
     async givePostById(id: string): Promise<PostType | null> {
