@@ -60,7 +60,7 @@ blogsRouter.get('/',
            res: Response<ContentPageType>) => {
 
     const pageWithBlogs: ContentPageType = await blogsService
-        .giveBlogsPage(req.query.searchNameTerm? req.query.searchNameTerm : null,
+        .giveBlogsPage(req.query.searchNameTerm,
                        req.query.sortBy,
                        req.query.sortDirection,
                        req.query.pageNumber,

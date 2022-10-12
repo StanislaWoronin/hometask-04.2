@@ -2,6 +2,7 @@ import {blogsRepository} from "../repositories/blogs-repository";
 import {BlogType} from "../types/blogs-type";
 import {ContentPageType} from "../types/content-page-type";
 import {paginationContentPage} from "../paginationContentPage";
+import {BlogsQueryParametersWithTerm} from "../types/blogsQueryParameters";
 
 export const blogsService = {
     async createNewBlog(name: string, youtubeUrl: string): Promise<BlogType> {
